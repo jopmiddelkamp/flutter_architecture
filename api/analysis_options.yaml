@@ -1,0 +1,16 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - 'build/**'
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+
+linter:
+  rules:
+    file_names: false
+    # no_default_cases: false
+    always_use_package_imports: false
+    # TODO: Enable this rule
+    public_member_api_docs: false
+    one_member_abstracts: false

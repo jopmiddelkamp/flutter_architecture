@@ -1,0 +1,182 @@
+name: flutter_architecture_api
+
+packages:
+  - packages/**
+  - servers/**
+
+command:
+  bootstrap:
+    environment:
+      sdk: ">=3.5.0 <4.0.0"
+
+    dependencies:
+      dart_frog: ^1.2.0
+      dart_frog_auth: ^1.2.0
+      dart_jsonwebtoken: ^3.2.0
+      freezed_annotation: ^3.0.0
+      json_annotation: ^4.9.0
+      uuid: ^4.5.1
+
+    dev_dependencies:
+      build_runner: ^2.4.8
+      freezed: ^3.0.6
+      json_serializable: ^6.9.5
+      melos: ^6.3.2
+      mocktail: ^1.0.4
+      test: ^1.25.5
+      very_good_analysis: ^6.0.0 
+
+scripts:
+  start:
+    run: |
+      melos exec --concurrency=3 -- \
+        ./dev.sh
+    packageFilters:
+      fileExists:
+        - dev.sh
+
+  analyze:
+    run: |
+      melos exec -- \
+        dart analyze . --fatal-infos --fatal-warnings
+    description: |
+      Run `dart analyze` in all packages with strict checks.
+
+  get:
+    run: |
+      melos exec -- \
+        dart pub get
+    description: |
+      Run `dart pub get` in all packages.
+
+  upgrade:
+    run: |
+      melos exec -- \
+        dart pub upgrade
+    description: |
+      Run `dart pub upgrade` in all packages.
+
+  upgrade:major:
+    run: |
+      melos exec -- \
+        dart pub upgrade --major-versions
+    description: |
+      Run `dart pub upgrade --major-versions` in all packages.
+
+  format:
+    run: |
+      melos exec -- \
+        'dart format $(find . -name "*.dart" -not -name "*.freezed.dart" -not -name "*.g.dart" -not -wholename "*/generated/*")'
+    description: |
+      Run `dart format` in all packages.
+
+  fix:apply:
+    run: |
+      melos exec -- \
+        dart fix --apply
+    description: |
+      Run `dart fix --apply` in all packages.
+
+  format:set_exit_if_changed:
+    run: |
+      melos exec -- \
+        'dart format $(find . -name "*.dart" -not -name "*.freezed.dart" -not -name "*.g.dart" -not -wholename "*/generated/*") --set-exit-if-changed'
+    description: |
+      Run `dart format` with exit on changes in all packages.
+
+  test:
+    run: |
+      melos run test:selective --no-select
+    description: |
+      Run tests in all packages.
+
+  test:selective:
+    run: |
+      melos exec --fail-fast -- \
+        dart test --concurrency=1
+    description: |
+      Run `dart test` for a specific package.
+    packageFilters:
+      dirExists:
+        - test
+
+  test:coverage:
+    run: |
+      melos exec -- \
+        dart test --coverage=coverage && \
+        dart pub run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
+    description: |
+      Generate test coverage report.
+    packageFilters:
+      dirExists:
+        - test
+
+  clean:deep:
+    run: |
+      git clean -x -d -f -q && \
+      find . -name "*.g.dart" -delete && \
+      find . -name "*.freezed.dart" -delete && \
+      rm -rf .dart_tool/build
+    description: |
+      Clean everything including generated files.
+
+  postclean:
+    run: |
+      melos exec --dart --concurrency=3 -- "dart clean"
+    description: |
+      Clean Dart-specific files.
+
+  gen:
+    run: |
+      melos generate
+    description: |
+      Generate code in all packages.
+
+  generate:
+    run: |
+      melos build_runner:build
+    description: |
+      Generate code in all packages.
+
+  build_runner:build:
+    run: |
+      melos exec --depends-on=build_runner -- \
+        "dart run build_runner build --delete-conflicting-outputs"
+    description: |
+      Run build_runner with verbose output.
+
+  build_runner:watch:
+    run: |
+      melos exec --depends-on=build_runner -- \
+        "dart pub run build_runner watch --delete-conflicting-outputs"
+    description: |
+      Run build_runner in watch mode.
+
+  build_runner:clean:
+    run: |
+      melos exec --depends-on=build_runner -- \
+        "dart pub run build_runner clean"
+    description: |
+      Clean build_runner outputs.
+
+  check:
+    run: |
+      melos run analyze && \
+      melos run format:set_exit_if_changed && \
+      melos run test
+    description: |
+      Run all checks (analyze, format, test).
+
+  prepare:
+    run: |
+      melos run get && \
+      melos run generate
+    description: |
+      Prepare the workspace for development.
+
+  ci:
+    run: |
+      melos run check && \
+      melos run test:coverage
+    description: |
+      Run CI checks including coverage.

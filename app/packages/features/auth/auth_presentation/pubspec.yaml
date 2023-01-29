@@ -1,0 +1,35 @@
+name: feature_auth_presentation
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+
+dependencies:
+  collection: ^1.17.0
+  decimal: ^2.3.2
+  feature_auth_domain:
+    path: ../auth_domain
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.2
+  flutter_hooks: ^0.19.0
+  freezed_annotation: ^2.0.3
+  get_it: ^7.2.0
+  hydrated_bloc: ^9.1.0
+  json_annotation: ^4.0.0
+  shared_domain:
+    path: ../../../shared/shared_domain
+  shared_presentation:
+    path: ../../../shared/shared_presentation
+
+dev_dependencies:
+  build_runner: ^2.3.3
+  flutter_test:
+    sdk: flutter
+  freezed: ^2.0.3+1
+  json_serializable: ^6.0.0
+  very_good_analysis: ^5.0.0+1

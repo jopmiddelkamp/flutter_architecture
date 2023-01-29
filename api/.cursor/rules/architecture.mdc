@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# General 
+
+Design constraints:
+	•	Strict Clean Architecture (no exceptions)
+	•	Maximum separation of concerns
+	•	Infrastructure pluggability (e.g., allow swapping polling for notifications without changing app logic)
+	•	No UI logic in domain or use cases
+	•	No hidden timers, callbacks, or imperative glue
+	•	Domain and Application layers must be pure, stream-driven, future-driven, async clean.
+	•	No StreamController in domain.
+	•	No Timer in domain or application.
+	•	No startPolling() type of imperative commands — everything must be reactive, not push-triggered.
+	•	If you make a mistake in your own proposal (e.g., introduce bad patterns), call yourself out and restart cleanly.
+	•	Direct feedback only. No sugarcoating. No validation of bad code.
+
+You must treat microservices as part of the same quality bar:
+	•	Microservices must have clean folder structures.
+	•	Proper separation between Domain, Application, Infrastructure.
+	•	Minimal framework leakage (e.g., don’t leak HTTP client logic into domain or use cases).
+	•	If a microservice violates Clean Architecture, propose concrete restructuring and new examples.
+
+# Project Layering Rules (for Clean Architecture in Dart Frog/.NET/General)
+ - **Presentation Layer**
+   - Handles all incoming requests (HTTP, UI, CLI, etc.).
+   - Maps requests to application use cases.
+   - Maps use case results/errors to protocol-specific responses (e.g., HTTP JSON, HTML).
+   - Contains controllers/routes, request/response DTOs, and mappers for inbound/outbound data.
+   - In Dart Frog, this is the presentation_dart_frog package.
+   - In .NET, this is the “Web” or “API” project with controllers.
+ - **Application Layer**
+   - Contains use cases, orchestrates domain logic.
+   - Defines contracts/interfaces for errors and results.
+   - No protocol or serialization logic.
+ - **Domain Layer**
+   - Pure business logic, entities, value objects, domain errors.
+   - No dependencies on other layers.
+ - **Infrastructure Layer**
+   - Handles technical details for outbound communication (DB, external HTTP/gRPC, file system, etc.).
+   - Contains adapters, repositories, and DTOs for external systems.
+   - Never contains code for handling incoming HTTP requests to your API.
+ - **HTTP Layering Rule**
+   - If HTTP is used to receive requests from clients (API):
+   - All DTOs, mappers, and controllers/routes belong in the presentation layer.
+   - If HTTP is used to call external services:
+   - All DTOs, mappers, and adapters belong in the infrastructure layer.
+ - **General**
+   - Never serialize/deserialize domain or application objects directly.
+   - Always use mappers to convert between domain/application objects and DTOs in the appropriate layer.

@@ -1,0 +1,12 @@
+# melos_managed_dependency_overrides: flutter_architecture_api_auth_domain,flutter_architecture_api_auth_application,flutter_architecture_api_shared_application,flutter_architecture_api_shared_domain,flutter_architecture_api_shared_infrastructure
+dependency_overrides:
+  flutter_architecture_api_auth_application:
+    path: ../application
+  flutter_architecture_api_auth_domain:
+    path: ../domain
+  flutter_architecture_api_shared_application:
+    path: ../../shared/application
+  flutter_architecture_api_shared_domain:
+    path: ../../shared/domain
+  flutter_architecture_api_shared_infrastructure:
+    path: ../../shared/infrastructure

@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: flutter_architecture_api_shared_domain
+dependency_overrides:
+  flutter_architecture_api_shared_domain:
+    path: ../../shared/domain

@@ -1,0 +1,27 @@
+name: shared_data
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+
+dependencies:
+  back_end:
+    path: ../../data_access_objects/back_end
+  collection: ^1.17.0
+  decimal: ^2.3.2
+  dio: ^5.0.3
+  flutter:
+    sdk: flutter
+  flutter_keychain: ^2.2.1
+  hive: ^2.2.3
+  rxdart: ^0.27.7
+  shared_domain:
+    path: ../shared_domain
+
+dev_dependencies:
+  test: ^1.23.1
+  very_good_analysis: ^5.0.0+1

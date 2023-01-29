@@ -1,0 +1,18 @@
+# melos_managed_dependency_overrides: flutter_architecture_api_auth_application,flutter_architecture_api_auth_domain,flutter_architecture_api_auth_infrastructure,flutter_architecture_api_auth_presentation_dart_frog,flutter_architecture_api_shared_application,flutter_architecture_api_shared_domain,flutter_architecture_api_shared_infrastructure,flutter_architecture_api_shared_presentation_dart_frog
+dependency_overrides:
+  flutter_architecture_api_auth_application:
+    path: ../../packages/auth/application
+  flutter_architecture_api_auth_domain:
+    path: ../../packages/auth/domain
+  flutter_architecture_api_auth_infrastructure:
+    path: ../../packages/auth/infrastructure
+  flutter_architecture_api_auth_presentation_dart_frog:
+    path: ../../packages/auth/presentation_dart_frog
+  flutter_architecture_api_shared_application:
+    path: ../../packages/shared/application
+  flutter_architecture_api_shared_domain:
+    path: ../../packages/shared/domain
+  flutter_architecture_api_shared_infrastructure:
+    path: ../../packages/shared/infrastructure
+  flutter_architecture_api_shared_presentation_dart_frog:
+    path: ../../packages/shared/presentation_dart_frog

@@ -1,0 +1,176 @@
+name: middelkamp_dev
+
+packages:
+  - .
+  - packages/**
+
+scripts:
+  init:
+    run: |
+      melos bootstrap && melos get && melos generate
+    description: Initalize the project. Build and generate.
+
+  reinit:
+    run: |
+      melos clean && melos init
+    description: Reinitalize the project. Clean, build and generate.
+
+  analyze:
+    run: |
+      melos exec -- \
+        dart analyze . --fatal-infos
+    description: |
+      Run `dart analyze` in all packages.
+
+  get:
+    run: |
+      melos exec -- \
+        flutter pub get
+    description: |
+      Run `flutter packages get` in all packages.
+
+  upgrade:
+    run: |
+      melos exec -- \
+        flutter packages upgrade
+    description: |
+      Run `flutter packages upgrade` in all packages.
+
+  upgrade:major:
+    run: |
+      melos exec -- \
+        flutter packages upgrade --major-versions
+    description: |
+      Run `flutter packages upgrade --major-versions` in all packages.
+
+  format:
+    run: |
+      melos exec -- \
+        'dart format $(find . -name "*.dart" -not -name "*.freezed.dart" -not -name "*.g.dart" -not -wholename "*/generated/*")'
+    description: |
+      Run `dart format .` in all packages.
+
+  fix:apply:
+    run: |
+      melos exec -- \
+        flutter fix --apply
+    description: |
+      Run `flutter fix --apply` in all packages.
+
+  format:set_exit_if_changed:
+    run: |
+      melos exec -- \
+        'flutter format $(find . -name "*.dart" -not -name "*.freezed.dart" -not -name "*.g.dart" -not -wholename "*/generated/*") --set-exit-if-changed'
+    description: |
+      Run `flutter format . --set-exit-if-changed` in all packages.
+
+  remove_pubspec_locks:
+    description: "Recursively removes all pubspec.lock files in a folder."
+    run: |
+      find . -name 'pubspec.lock' -type f -delete
+
+  clean:deep:
+    run: git clean -x -d -f -q
+    description: Clean things very deeply, can be used to establish "pristine checkout" status.
+
+  # Additional cleanup lifecycle script, executed when `melos clean` is run.
+  postclean: >
+    melos exec --depends-on=flutter  --dart --concurrency=3 -- "flutter clean"
+
+  gen:
+    run: |
+      melos generate
+    description: Generate code in all packages.
+
+  generate:
+    run: |
+      melos build_runner:build && melos l10n
+    description: Generate code in all packages.
+
+  build_runner:build:
+    run: |
+      melos exec --depends-on=build_runner "flutter pub run build_runner build --delete-conflicting-outputs"
+
+  build_runner:watch:
+    run: |
+      melos exec --depends-on=build_runner "flutter pub run build_runner watch --delete-conflicting-outputs"
+
+  # features/auth
+  auth:gen:
+    run: |
+      melos auth:build_runner:build
+    description: Run build_runner build in auth.
+
+  auth:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in auth.
+    select-package:
+      scope: 'packages/features/auth/**'
+
+  # features/auth_data
+  auth_data:gen:
+    run: |
+      melos auth_data:build_runner:build
+    description: Run build_runner build in auth_data.
+
+  auth_data:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in auth_data.
+    select-package:
+      scope: '*auth_data'
+
+  auth_data:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in auth_data.
+    select-package:
+      scope: '*auth_data'
+
+  # features/auth_domain
+  auth_domain:gen:
+    run: |
+      melos auth_domain:build_runner:build
+    description: Run build_runner build in auth_domain.
+
+  auth_domain:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in auth_domain.
+    select-package:
+      scope: '*auth_domain'
+
+  auth_domain:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in auth_domain.
+    select-package:
+      scope: '*auth_domain'
+
+  # features/auth_presentation
+  auth_presentation:gen:
+    run: |
+      melos auth_presentation:build_runner:build
+    description: Run build_runner build in auth_presentation.
+
+  auth_presentation:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in auth_presentation.
+    select-package:
+      scope: '*auth_presentation'
+
+  auth_presentation:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in auth_presentation.
+    select-package:
+      scope: '*auth_presentation'

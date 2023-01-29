@@ -1,0 +1,20 @@
+name: flutter_architecture_api_project_domain
+description: Project domain for the Flutter Architecture API
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter_architecture_api_shared_domain:
+    path: ../../shared/domain
+  freezed_annotation: ^3.0.0
+  uuid: ^4.5.1
+
+dev_dependencies:
+  build_runner: ^2.4.8
+  freezed: ^3.0.6
+  mocktail: ^1.0.4
+  test: ^1.25.5
+  very_good_analysis: ^6.0.0
