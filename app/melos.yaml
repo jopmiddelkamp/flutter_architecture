@@ -1,0 +1,292 @@
+name: flutter_architecture
+
+packages:
+  - flutter_architecture_*
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+    runPubGetInParallel: false
+
+scripts:
+  init:
+    run: |
+      melos bootstrap && melos get && melos generate
+    description: Initalize the project. Build and generate.
+
+  reinit:
+    run: |
+      melos clean && melos init
+    description: Reinitalize the project. Clean, build and generate.
+
+  analyze:
+    run: |
+      melos exec -- \
+        flutter analyze . --fatal-infos
+    description: |
+      Run `flutter analyze` in all packages.
+
+  get:
+    run: |
+      melos exec -- \
+        flutter packages get
+    description: |
+      Run `flutter packages get` in all packages.
+
+  upgrade:
+    run: |
+      melos exec -- \
+        flutter packages upgrade
+    description: |
+      Run `flutter packages upgrade` in all packages.
+
+  upgrade:major:
+    run: |
+      melos exec -- \
+        flutter packages upgrade --major-versions
+    description: |
+      Run `flutter packages upgrade --major-versions` in all packages.
+
+  format:
+    run: |
+      melos exec -- \
+        'flutter format $(find . -name "*.dart" -not -name "*.freezed.dart" -not -name "*.g.dart" -not -wholename "*/generated/*")'
+    description: |
+      Run `flutter format .` in all packages.
+
+  fix:apply:
+    run: |
+      melos exec -- \
+        dart fix --apply
+    description: |
+      Run `dart fix --apply` in all packages.
+
+  format:set_exit_if_changed:
+    run: |
+      melos exec -- \
+        'flutter format $(find . -name "*.dart" -not -name "*.freezed.dart" -not -name "*.g.dart" -not -wholename "*/generated/*") --set-exit-if-changed'
+    description: |
+      Run `flutter format . --set-exit-if-changed` in all packages.
+
+  start:debug:
+    run: |
+      melos exec -- \
+        flutter run --target=lib/main_development.dart --flavor=development --debug
+    description: Run the Flutter application in debug mode.
+    select-package:
+      scope: "*_app"
+
+  test:
+    run: |
+      melos run test:selective --no-select
+
+  test:selective:
+    run: |
+      melos exec --fail-fast -- \
+        flutter test --no-pub
+    description: Run `flutter test` for a specific package.
+    select-package:
+      dir-exists:
+        - test
+
+  clean:deep:
+    run: git clean -x -d -f -q
+    description: Clean things very deeply, can be used to establish "pristine checkout" status.
+
+  # Additional cleanup lifecycle script, executed when `melos clean` is run.
+  postclean: >
+    melos exec --flutter --concurrency=3 -- "flutter clean"
+
+  gen:
+    run: |
+      melos generate
+    description: Generate code in all packages.
+
+  generate:
+    run: |
+      melos build_runner:build && melos l10n
+    description: Generate code in all packages.
+
+  build_runner:build:
+    run: |
+      melos exec --depends-on=build_runner "flutter pub run build_runner build --delete-conflicting-outputs"
+
+  build_runner:watch:
+    run: |
+      melos exec --depends-on=build_runner "flutter pub run build_runner watch --delete-conflicting-outputs"
+
+  l10n:
+    run: |
+      melos exec --depends-on=intl_utils "flutter pub run intl_utils:generate"
+
+  ###############################
+  ### flutter_architecture_ui ###
+  ###############################
+
+  ui:get:
+    run: |
+      melos exec -- \
+        "flutter pub get"
+    description: Run flutter pub get in flutter_architecture_ui.
+    select-package:
+      scope: '*flutter_architecture_ui'
+
+  ui:gen:
+    run: |
+      melos ui:build_runner:build
+    description: Run build_runner build in flutter_architecture_ui.
+
+  ui:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in flutter_architecture_ui.
+    select-package:
+      scope: '*flutter_architecture_ui'
+
+  ui:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in flutter_architecture_ui.
+    select-package:
+      scope: '*flutter_architecture_ui'
+
+  ui:l10n:
+    run: |
+      melos exec -- \
+        "flutter gen-l10n"
+    description: Run flutter gen-l10n in flutter_architecture_ui.
+    select-package:
+      scope: '*flutter_architecture_ui'
+
+  ui:clean:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner clean"
+    description: Run build_runner clean in flutter_architecture_ui.
+    select-package:
+      scope: '*flutter_architecture_ui'
+
+  ################################
+  ### flutter_architecture_app ###
+  ################################
+
+  app:get:
+    run: |
+      melos exec -- \
+        "flutter pub get"
+    description: Run flutter pub get in flutter_architecture_app.
+    select-package:
+      scope: '*flutter_architecture_app'
+
+  app:gen:
+    run: |
+      melos app:build_runner:build
+    description: Run build_runner build in flutter_architecture_app.
+
+  app:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in flutter_architecture_app.
+    select-package:
+      scope: '*flutter_architecture_app'
+
+  app:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in flutter_architecture_app.
+    select-package:
+      scope: '*flutter_architecture_app'
+
+  app:clean:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner clean"
+    description: Run build_runner clean in flutter_architecture_app.
+    select-package:
+      scope: '*flutter_architecture_app'
+
+  #################################
+  ### flutter_architecture_core ###
+  #################################
+
+  core:get:
+    run: |
+      melos exec -- \
+        "flutter pub get"
+    description: Run flutter pub get in flutter_architecture_core.
+    select-package:
+      scope: '*flutter_architecture_core'
+
+  core:gen:
+    run: |
+      melos core:build_runner:build
+    description: Run build_runner build in flutter_architecture_core.
+
+  core:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in flutter_architecture_core.
+    select-package:
+      scope: '*flutter_architecture_core'
+
+  core:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in flutter_architecture_core.
+    select-package:
+      scope: '*flutter_architecture_core'
+
+  core:clean:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner clean"
+    description: Run build_runner clean in flutter_architecture_core.
+    select-package:
+      scope: '*flutter_architecture_core'
+
+  #################################
+  ### flutter_architecture_data ###
+  #################################
+
+  data:get:
+    run: |
+      melos exec -- \
+        "flutter pub get"
+    description: Run flutter pub get in flutter_architecture_data.
+    select-package:
+      scope: '*flutter_architecture_data'
+
+  data:gen:
+    run: |
+      melos data:build_runner:build
+    description: Run build_runner build in flutter_architecture_data.
+
+  data:build_runner:build:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Run build_runner build in flutter_architecture_data.
+    select-package:
+      scope: '*flutter_architecture_data'
+
+  data:build_runner:watch:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner watch --delete-conflicting-outputs"
+    description: Run build_runner watch in flutter_architecture_data.
+    select-package:
+      scope: '*flutter_architecture_data'
+
+  data:clean:
+    run: |
+      melos exec -- \
+        "flutter pub run build_runner clean"
+    description: Run build_runner clean in flutter_architecture_data.
+    select-package:
+      scope: '*flutter_architecture_data'
