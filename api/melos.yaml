@@ -1,25 +1,15 @@
-name: middelkamp_dev
+name: flutter_architecture_api
+
+packages:
+  - .
+  - packages/**
 
 command:
   bootstrap:
     usePubspecOverrides: true
     runPubGetInParallel: false
 
-packages:
-  - .
-  - packages/**
-
 scripts:
-  init:
-    run: |
-      melos bootstrap && melos get && melos generate
-    description: Initalize the project. Build and generate.
-
-  reinit:
-    run: |
-      melos clean && melos init
-    description: Reinitalize the project. Clean, build and generate.
-
   analyze:
     run: |
       melos exec -- \
@@ -32,7 +22,8 @@ scripts:
       melos exec -- \
         dart pub get
     description: |
-      Run `dart packages get` in all packages.
+      Run `dart pub get` in all packages.
+
 
   upgrade:
     run: |
@@ -69,10 +60,18 @@ scripts:
     description: |
       Run `dart format . --set-exit-if-changed` in all packages.
 
-  remove_pubspec_locks:
-    description: "Recursively removes all pubspec.lock files in a folder."
+  test:
     run: |
-      find . -name 'pubspec.lock' -type f -delete
+      melos run test:selective --no-select
+
+  test:selective:
+    run: |
+      melos exec --fail-fast -- \
+        dart test --no-pub
+    description: Run `dart test` for a specific package.
+    select-package:
+      dir-exists:
+        - test
 
   clean:deep:
     run: git clean -x -d -f -q
@@ -80,7 +79,7 @@ scripts:
 
   # Additional cleanup lifecycle script, executed when `melos clean` is run.
   postclean: >
-    melos exec --depends-on=flutter  --dart --concurrency=3 -- "flutter clean"
+    melos exec --dart --concurrency=3 -- "dart clean"
 
   gen:
     run: |
@@ -89,7 +88,7 @@ scripts:
 
   generate:
     run: |
-      melos build_runner:build && melos l10n
+      melos build_runner:build
     description: Generate code in all packages.
 
   build_runner:build:
@@ -98,4 +97,4 @@ scripts:
 
   build_runner:watch:
     run: |
-      melos exec --depends-on=build_runner "dart pub run build_runner watch --delete-conflicting-outputs"
+      melos exec 

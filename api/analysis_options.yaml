@@ -1,0 +1,10 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - build/**
+
+linter:
+  rules:
+    file_names: false
+    no_default_cases: false
