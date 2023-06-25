@@ -1,8 +1,10 @@
 name: flutter_architecture_api
 
 packages:
-  - .
-  - packages/**
+  - auth/**
+  - project/**
+  - shared/**
+  - user/**
 
 command:
   bootstrap:
@@ -10,6 +12,14 @@ command:
     runPubGetInParallel: false
 
 scripts:
+  start:
+    run: |
+      melos exec --concurrency=3  -- \
+        ./dev.sh
+    select-package:
+      file-exists:
+        - dev.sh
+
   analyze:
     run: |
       melos exec -- \

@@ -11,9 +11,3 @@ build/
 
 # Test related files
 coverage/
-
-# VS Code related files
-.vscode
-
-# IDEA
-.idea

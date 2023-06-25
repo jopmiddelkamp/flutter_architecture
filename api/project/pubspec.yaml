@@ -1,0 +1,28 @@
+name: middelkamp_dev_api_project
+description: An new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+
+dependencies:
+  dart_frog: ^0.3.7
+  equatable: ^2.0.5
+  freezed_annotation: ^2.0.3
+  in_memory_project_dao:
+    path: data/access_objects/in_memory_project_dao
+  internal_user_api_dao:
+    path: ../shared/data/access_objects/internal_user_api_dao
+  json_annotation: ^4.0.0
+  middelkamp_dev_api_shared:
+    path: ../shared
+
+dev_dependencies:
+  build_runner: ^2.0.0
+  freezed: ^2.0.3+1
+  json_serializable: ^6.0.0
+  melos: ^3.0.0
+  mocktail: ^0.3.0
+  test: ^1.19.2
+  very_good_analysis: ^5.0.0+1

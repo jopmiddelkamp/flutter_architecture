@@ -1,0 +1,1 @@
+dart_frog dev --port 7100 --dart-vm-service-port 7100
