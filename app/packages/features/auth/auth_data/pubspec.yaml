@@ -17,6 +17,7 @@ dependencies:
   feature_auth_domain:
     path: ../auth_domain
   flutter_keychain: ^2.2.1
+  rxdart: ^0.27.7
   shared_data:
     path: ../../../shared/shared_data
   shared_domain:
@@ -24,4 +25,4 @@ dependencies:
 
 dev_dependencies:  
   test: ^1.23.1
-  very_good_analysis: ^4.0.0+1
+  very_good_analysis: ^5.0.0+1

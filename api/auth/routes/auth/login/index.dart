@@ -58,6 +58,7 @@ Future<Response> _onPostRequest(
   return Response.json(
     body: {
       'token': token.encode(),
+      'user': user.toJson(),
     },
   );
 }

@@ -1,3 +1,9 @@
+import 'package:feature_auth_data/bootstrap.dart' as auth_data;
+import 'package:feature_profile_data/bootstrap.dart' as profile_data;
+import 'package:feature_project_management_data/bootstrap.dart'
+    as feature_project_management_data;
+import 'package:feature_user_management_data/bootstrap.dart'
+    as feature_user_management_data;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +29,16 @@ Future<void> mainDelegate({
     userMicroServiceBaseUrl: userMicroServiceBaseUrl,
     projectMicroServiceBaseUrl: projectMicroServiceBaseUrl,
   );
+
+  await auth_data.bootstrap(
+    authApiBaseUrl: authMicroServiceBaseUrl,
+  );
+  await Future.wait([
+    profile_data.bootstrap(),
+    feature_project_management_data.bootstrap(),
+    feature_user_management_data.bootstrap(),
+  ]);
+
   await shared_domain.bootstrap();
 
   runApp(const MyApp());

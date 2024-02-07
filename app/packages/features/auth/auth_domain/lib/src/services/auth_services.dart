@@ -7,10 +7,15 @@ class AuthService {
 
   final AuthRepository _authRepository;
 
-  Stream<String?> get token => _authRepository.token;
-
-  Future<void> login(String username, String password) async {
-    await _authRepository.login(username, password);
+  Future<void> login(
+    String username,
+    String password,
+  ) async {
+    final result = await _authRepository.login(
+      username,
+      password,
+    );
+    return result;
   }
 
   Future<void> logout() async {

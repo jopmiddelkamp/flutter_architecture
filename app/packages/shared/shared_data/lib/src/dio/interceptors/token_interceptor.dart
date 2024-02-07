@@ -1,15 +1,18 @@
 import 'package:dio/dio.dart';
-import 'package:shared_domain/mediators.dart';
+import 'package:shared_domain/repositories.dart';
 
 class TokenInterceptor extends InterceptorsWrapper {
-  TokenInterceptor();
+  TokenInterceptor(TokenRepository tokenRepository)
+      : _tokenRepository = tokenRepository;
+
+  final TokenRepository _tokenRepository;
 
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) {
-    final token = TokenMediator.instance.token;
+    final token = _tokenRepository.token;
     if (token != null) {
       options.headers['Authorization'] = token;
     }

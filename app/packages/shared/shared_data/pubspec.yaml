@@ -18,9 +18,10 @@ dependencies:
     sdk: flutter
   flutter_keychain: ^2.2.1
   hive: ^2.2.3
+  rxdart: ^0.27.7
   shared_domain:
     path: ../shared_domain
 
 dev_dependencies:
   test: ^1.23.1
-  very_good_analysis: ^4.0.0+1
+  very_good_analysis: ^5.0.0+1

@@ -6,6 +6,8 @@ import 'package:shared_data/src/storage_managers/hive_storage_manager.dart';
 import 'package:shared_domain/dependency_injection.dart';
 import 'package:shared_domain/storage.dart';
 
+import 'mediators.dart';
+
 const String _storageEncryptionSecretKey = 'storage_encryption_secret';
 
 Future<void> bootstrap({
@@ -15,6 +17,17 @@ Future<void> bootstrap({
 }) async {
   final storageManager = await _getHiveStorageManager();
   Di.instance.registerSingleton<StorageManager>(storageManager);
+
+  Di.instance.registerSingletonAsync<TokenMediator>(
+    () async => TokenMediatorImpl(
+      storageManager: Di.instance.get<StorageManager>(),
+    ),
+  );
+  Di.instance.registerSingletonAsync<AuthUserMediator>(
+    () async => AuthUserMediatorImpl(
+      storageManager: Di.instance.get<StorageManager>(),
+    ),
+  );
 }
 
 Future<StorageManager> _getHiveStorageManager() async {

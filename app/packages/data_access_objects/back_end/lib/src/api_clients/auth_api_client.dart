@@ -1,5 +1,6 @@
-import 'package:back_end/src/dtos/login_response_dto.dart';
 import 'package:dio/dio.dart';
+
+import '../models/log_in_response_dto.dart';
 
 class AuthApiClient {
   const AuthApiClient({
@@ -8,26 +9,17 @@ class AuthApiClient {
 
   final Dio _dio;
 
-  Future<String> login(
+  Future<LogInResponseDto> login(
     String username,
     String password,
   ) async {
-    try {
-      final response = await _dio.post<LoginResponseDto>(
-        'login',
-        data: {
-          'username': username,
-          'password': password,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return response.data!.token;
-      } else {
-        throw Exception('Invalid username or password');
-      }
-    } catch (e) {
-      rethrow;
-    }
+    final response = await _dio.post<LogInResponseDto>(
+      'login',
+      data: {
+        'username': username,
+        'password': password,
+      },
+    );
+    return response.data!;
   }
 }

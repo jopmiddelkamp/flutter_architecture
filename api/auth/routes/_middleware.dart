@@ -7,5 +7,4 @@ Handler middleware(Handler handler) {
   return handler
       .use(requestLogger())
       .use(provider<AuthUserDao>((_) => _authUserDao));
-  ;
 }

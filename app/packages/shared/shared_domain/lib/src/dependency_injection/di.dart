@@ -1,4 +1,4 @@
-import 'package:shared_domain/src/dependency_injection/abstraction/dependency_injection_container.dart';
+import 'package:shared_domain/src/dependency_injection/dependency_injection_container.dart';
 
 abstract class Di {
   static DependencyInjectionContainer? _instance;
